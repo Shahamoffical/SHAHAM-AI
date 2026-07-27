@@ -1,5 +1,5 @@
 import json
-
+from concurrent.futures import ThreadPoolExecutor
 from langchain_ollama import ChatOllama
 from app.config import OLLAMA_HOST, OLLAMA_MODEL
 from app.tools import document_search, web_search
@@ -13,81 +13,93 @@ llm = ChatOllama(**llm_kwargs)
 
 # ---------- 1) PLANNER AGENT ----------
 def planner_agent(query: str) -> list:
-    """Deconstructs the user query into 2-4 focused sub-tasks with designated search tools."""
-    prompt = f"""You are an autonomous research Planner. Break the user's question into 2-4 focused subtasks.
+    """Deconstructs the user query into focused sub-tasks based on query complexity."""
+    words = query.strip().split()
+    
+    # Fast path for simple questions (< 8 words)
+    if len(words) <= 8:
+        return [{"task": query, "source": "web"}]
+
+    prompt = f"""You are an autonomous research Planner. Break the user's question into 1 to 2 focused subtasks.
 You MUST write all task descriptions strictly in clear, professional English.
-For each task, decide the best source: "web" (for current or general web information) or "document" (for user's uploaded PDF/CSV files).
+For each task, decide the best source: "web" (for web info) or "document" (for uploaded PDF/CSV files).
 Return ONLY a valid JSON list, no extra markdown or explanations. Example:
-[{{\"task\": \"...\", \"source\": \"web\"}}, {{\text\": \"...\", \"source\": \"document\"}}]
+[{{\"task\": \"...\", \"source\": \"web\"}}]
 
 User question: {query}"""
 
-    resp = llm.invoke(prompt).content
     try:
+        resp = llm.invoke(prompt).content
         start = resp.index("[")
         end = resp.rindex("]") + 1
-        return json.loads(resp[start:end])
+        plan = json.loads(resp[start:end])
+        return plan if len(plan) > 0 else [{"task": query, "source": "web"}]
     except Exception:
-        # Fallback: single web research task
         return [{"task": query, "source": "web"}]
 
 
-# ---------- 2) RESEARCH AGENT ----------
+# ---------- 2) RESEARCH AGENT (Parallel Execution) ----------
+def _execute_subtask(step: dict, session_id: str) -> list:
+    task = step.get("task", "")
+    source = step.get("source", "web")
+    sub_findings = []
+    
+    if source == "document":
+        hits = document_search(task, session_id)
+        for h in hits:
+            sub_findings.append({
+                "type": "document",
+                "task": task,
+                "source": h["source"],
+                "text": h["text"],
+            })
+    else:
+        # Fetch top 3 relevant results for speed
+        hits = web_search(task, max_results=3)
+        for h in hits:
+            if h.get("snippet"):
+                sub_findings.append({
+                    "type": "web",
+                    "task": task,
+                    "source": h["url"],
+                    "text": h["snippet"],
+                    "title": h["title"],
+                })
+    return sub_findings
+
+
 def research_agent(plan: list, session_id: str) -> list:
-    """Executes search operations for each sub-task and aggregates research findings."""
+    """Executes search operations concurrently using ThreadPoolExecutor for speed."""
     findings = []
-    for step in plan:
-        task = step.get("task", "")
-        source = step.get("source", "web")
-        if source == "document":
-            hits = document_search(task, session_id)
-            for h in hits:
-                findings.append(
-                    {
-                        "type": "document",
-                        "task": task,
-                        "source": h["source"],
-                        "text": h["text"],
-                    }
-                )
-        else:
-            hits = web_search(task)
-            for h in hits:
-                findings.append(
-                    {
-                        "type": "web",
-                        "task": task,
-                        "source": h["url"],
-                        "text": h["snippet"],
-                        "title": h["title"],
-                    }
-                )
+    with ThreadPoolExecutor(max_workers=len(plan) or 1) as executor:
+        futures = [executor.submit(_execute_subtask, step, session_id) for step in plan]
+        for future in futures:
+            try:
+                findings.extend(future.result())
+            except Exception:
+                pass
     return findings
 
 
 # ---------- 3) WRITER AGENT ----------
 def writer_agent(query: str, findings: list) -> str:
-    """Synthesizes research findings into a structured markdown report with inline citations."""
-    context_lines, sources = [], []
-    for i, f in enumerate(findings, 1):
-        label = f.get("source") or "unknown"
-        context_lines.append(f"[{i}] ({f['type']}) {label}\n{f['text']}")
-        sources.append(f"[{i}] {label}")
+    """Synthesizes research findings into a concise, well-structured markdown report."""
+    context_lines = []
+    for i, f in enumerate(findings[:6], 1):  # Cap context to top 6 concise findings for fast LLM inference
+        label = f.get("source") or "web"
+        context_lines.append(f"[{i}] {label}\n{f['text']}")
 
     context = "\n\n".join(context_lines)
 
-    prompt = f"""You are an expert technical report Writer.
-CRITICAL MANDATE: You MUST write the ENTIRE report strictly in clean, professional, and well-formatted English. Do NOT use Roman Urdu, Hindi, or any non-English language under any circumstances.
+    prompt = f"""You are an expert research Writer.
+CRITICAL MANDATE: You MUST write the ENTIRE response strictly in clear, concise English.
 
-Using ONLY the provided sources below, write a comprehensive, well-structured research report answering the user's question.
-- Use clear Markdown headings (e.g. # Title, ## Executive Summary, ## Findings).
-- Add inline citations like [1], [2] immediately following sentences that cite a source.
-- End with a "## Sources" section listing all numbered reference sources.
+Answer the user's question directly and concisely using the provided context.
+Use clean Markdown formatting with clear headings, bullet points, and inline citations like [1], [2].
 
 QUESTION: {query}
 
-SOURCES:
+CONTEXT FINDINGS:
 {context}
 """
-    report = llm.invoke(prompt).content
-    return report
+    return llm.invoke(prompt).content
