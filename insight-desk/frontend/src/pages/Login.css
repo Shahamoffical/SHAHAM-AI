@@ -4,7 +4,7 @@
 /* Full Page Wrapper */
 .hexta-page {
   min-height: 100vh;
-  width: 100vw;
+  width: 100%;
   background-color: #000000;
   color: #ffffff;
   font-family: 'Outfit', 'Inter', sans-serif;
