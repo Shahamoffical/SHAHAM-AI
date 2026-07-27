@@ -1,3 +1,4 @@
+import time
 from datetime import datetime, timedelta
 import bcrypt
 from fastapi import Depends, HTTPException, status
@@ -46,7 +47,15 @@ def get_current_user(
     except JWTError:
         raise creds_error
 
-    user = db.query(models.User).filter(models.User.email == email).first()
+    user = None
+    for attempt in range(3):
+        try:
+            user = db.query(models.User).filter(models.User.email == email).first()
+            break
+        except Exception:
+            db.rollback()
+            time.sleep(0.5)
+
     if user is None:
         raise creds_error
     return user
