@@ -1,16 +1,16 @@
-/* VERIX AI RESEARCH WORKSPACE DESIGN SYSTEM */
+/* SHAHAM AI RESEARCH WORKSPACE DESIGN SYSTEM */
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap');
 
-.verix-research-page {
+/* Overall Split Layout */
+.shaham-layout {
   position: relative;
-  min-height: 100vh;
+  display: flex;
   width: 100vw;
+  min-height: 100vh;
   background-color: #030307;
   color: #ffffff;
   font-family: 'Outfit', 'Inter', sans-serif;
   overflow-x: hidden;
-  display: flex;
-  flex-direction: column;
 }
 
 /* Ambient Radial Glow */
@@ -24,7 +24,232 @@
   z-index: 0;
 }
 
-/* Top Navbar (VERIX Glassmorphic Header) */
+/* ========================================================= */
+/* LEFT SIDEBAR STYLING                                      */
+/* ========================================================= */
+.shaham-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 260px;
+  background: #17171e;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.4);
+}
+
+.shaham-sidebar-collapsed .shaham-sidebar {
+  transform: translateX(-100%);
+}
+
+.shaham-sidebar-expanded .shaham-main-wrapper {
+  margin-left: 260px;
+  width: calc(100vw - 260px);
+}
+
+.shaham-sidebar-collapsed .shaham-main-wrapper {
+  margin-left: 0;
+  width: 100vw;
+}
+
+/* Top Sidebar: New Chat / Research Button */
+.shaham-sidebar-header {
+  padding: 20px 16px 14px 16px;
+}
+
+.shaham-new-chat-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  font-size: 0.88rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-family: inherit;
+}
+
+.shaham-new-chat-btn:hover {
+  background: rgba(255, 85, 0, 0.2);
+  border-color: rgba(255, 85, 0, 0.4);
+  transform: translateY(-1px);
+}
+
+.shaham-new-chat-btn svg {
+  width: 18px;
+  height: 18px;
+  color: #ff5500;
+}
+
+/* Scrollable History List */
+.shaham-sidebar-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px 12px;
+}
+
+.shaham-sidebar-body::-webkit-scrollbar {
+  width: 4px;
+}
+
+.shaham-sidebar-body::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.shaham-history-group-title {
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.4);
+  padding: 12px 10px 6px 10px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.shaham-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.shaham-history-empty {
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.4);
+  padding: 12px 10px;
+  text-align: center;
+}
+
+.shaham-history-item {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  border-radius: 10px;
+  padding: 9px 12px;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.84rem;
+  font-weight: 400;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'Inter', sans-serif;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+
+.shaham-history-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+.shaham-history-item--active {
+  background: rgba(255, 85, 0, 0.15) !important;
+  color: #ffffff !important;
+  font-weight: 600;
+  border-left: 3px solid #ff5500;
+}
+
+.shaham-history-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+}
+
+/* Bottom Sidebar: User Account Card */
+.shaham-sidebar-footer {
+  padding: 14px 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.shaham-user-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.shaham-user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff5500, #ff7700);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(255, 85, 0, 0.3);
+}
+
+.shaham-user-info {
+  flex: 1;
+  overflow: hidden;
+}
+
+.shaham-user-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.shaham-user-email {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.5);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.shaham-user-logout-btn {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  padding: 6px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shaham-user-logout-btn:hover {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.15);
+}
+
+.shaham-user-logout-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* ========================================================= */
+/* MAIN CONTENT AREA                                         */
+/* ========================================================= */
+.shaham-main-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Top Navbar */
 .verix-research-nav {
   position: sticky;
   top: 0;
@@ -32,11 +257,40 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 18px 48px;
+  padding: 16px 40px;
   background: rgba(3, 3, 7, 0.85);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.verix-research-nav-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.shaham-sidebar-toggle-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.shaham-sidebar-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.shaham-sidebar-toggle-btn svg {
+  width: 18px;
+  height: 18px;
 }
 
 .verix-research-brand {
@@ -103,33 +357,6 @@
   gap: 12px;
 }
 
-.verix-research-btn-outline {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 18px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.04);
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 0.82rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-family: inherit;
-}
-
-.verix-research-btn-outline:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: #ffffff;
-  border-color: rgba(255, 255, 255, 0.25);
-}
-
-.verix-research-btn-outline svg {
-  width: 15px;
-  height: 15px;
-}
-
 .verix-research-btn-logout {
   display: flex;
   align-items: center;
@@ -161,9 +388,9 @@
 .verix-research-main {
   position: relative;
   z-index: 1;
-  max-width: 980px;
+  max-width: 900px;
   margin: 0 auto;
-  padding: 48px 24px 80px;
+  padding: 40px 24px 80px;
   width: 100%;
 }
 
@@ -174,7 +401,7 @@
 }
 
 .verix-research-title {
-  font-size: 2.5rem;
+  font-size: 2.4rem;
   font-weight: 800;
   letter-spacing: -0.01em;
   text-transform: uppercase;
@@ -191,8 +418,8 @@
 
 .verix-research-subtitle {
   color: rgba(255, 255, 255, 0.6);
-  font-size: 0.98rem;
-  max-width: 620px;
+  font-size: 0.95rem;
+  max-width: 600px;
   margin: 0 auto;
   line-height: 1.6;
 }
@@ -590,85 +817,66 @@
   font-size: 0.88em;
 }
 
-/* History Section */
-.verix-history-section {
-  margin-top: 48px;
-}
-
-.verix-history-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 0.82rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  color: rgba(255, 255, 255, 0.5);
-  margin-bottom: 20px;
-}
-
-.verix-history-header svg {
-  width: 16px;
-  height: 16px;
-}
-
-.verix-history-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 16px;
-}
-
-.verix-history-card {
-  background: rgba(14, 14, 20, 0.85);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 16px;
-  padding: 20px;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.verix-history-card:hover {
-  background: rgba(255, 85, 0, 0.05);
-  border-color: rgba(255, 85, 0, 0.35);
-  transform: translateY(-3px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
-}
-
-.verix-history-card-query {
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: #ffffff;
-  line-height: 1.5;
-  margin-bottom: 16px;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.verix-history-card-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 0.78rem;
-}
-
-.verix-history-card-date {
-  color: rgba(255, 255, 255, 0.4);
-}
-
-.verix-history-card-view {
-  color: #ff5500;
-  font-weight: 600;
-}
-
-/* LIGHT MODE OVERRIDES FOR RESEARCH PAGE */
-[data-theme="light"] .verix-research-page {
+/* ========================================================= */
+/* LIGHT MODE OVERRIDES FOR RESEARCH PAGE & SIDEBAR           */
+/* ========================================================= */
+[data-theme="light"] .shaham-layout {
   background-color: #c8c9c9;
+  color: #0f172a;
+}
+
+[data-theme="light"] .shaham-sidebar {
+  background: #d6d8db;
+  border-right-color: rgba(15, 23, 42, 0.12);
+  box-shadow: 4px 0 20px rgba(15, 23, 42, 0.08);
+}
+
+[data-theme="light"] .shaham-new-chat-btn {
+  background: #ffffff;
+  border-color: rgba(15, 23, 42, 0.15);
+  color: #0f172a;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+}
+
+[data-theme="light"] .shaham-new-chat-btn:hover {
+  background: #f1f5f9;
+  border-color: rgba(255, 85, 0, 0.4);
+}
+
+[data-theme="light"] .shaham-history-group-title {
+  color: #64748b;
+}
+
+[data-theme="light"] .shaham-history-item {
+  color: #334155;
+}
+
+[data-theme="light"] .shaham-history-item:hover {
+  background: rgba(15, 23, 42, 0.08);
+  color: #0f172a;
+}
+
+[data-theme="light"] .shaham-history-item--active {
+  background: rgba(255, 85, 0, 0.18) !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .shaham-sidebar-footer {
+  border-top-color: rgba(15, 23, 42, 0.1);
+  background: rgba(0, 0, 0, 0.03);
+}
+
+[data-theme="light"] .shaham-user-name {
+  color: #0f172a;
+}
+
+[data-theme="light"] .shaham-user-email {
+  color: #64748b;
+}
+
+[data-theme="light"] .shaham-sidebar-toggle-btn {
+  background: rgba(15, 23, 42, 0.05);
+  border-color: rgba(15, 23, 42, 0.12);
   color: #0f172a;
 }
 
@@ -693,12 +901,6 @@
 [data-theme="light"] .verix-research-pill:hover {
   color: #0f172a;
   background: rgba(15, 23, 42, 0.08);
-}
-
-[data-theme="light"] .verix-research-btn-outline {
-  background: rgba(15, 23, 42, 0.04);
-  border-color: rgba(15, 23, 42, 0.12);
-  color: #334155;
 }
 
 [data-theme="light"] .verix-research-title {
@@ -792,19 +994,19 @@
   color: #0f172a;
 }
 
-[data-theme="light"] .verix-history-card {
-  background: #ffffff;
-  border-color: rgba(15, 23, 42, 0.08);
-}
+/* Responsive Layout */
+@media (max-width: 900px) {
+  .shaham-sidebar {
+    width: 240px;
+  }
 
-[data-theme="light"] .verix-history-card-query {
-  color: #0f172a;
-}
+  .shaham-sidebar-expanded .shaham-main-wrapper {
+    margin-left: 0;
+    width: 100vw;
+  }
 
-/* Responsive */
-@media (max-width: 768px) {
   .verix-research-nav {
-    padding: 16px 20px;
+    padding: 14px 16px;
   }
 
   .verix-research-pills {
@@ -812,15 +1014,6 @@
   }
 
   .verix-research-main {
-    padding: 28px 16px 60px;
-  }
-
-  .verix-research-title {
-    font-size: 1.8rem;
-  }
-
-  .gemini-stadium-card {
-    padding: 16px;
-    border-radius: 20px;
+    padding: 24px 16px 60px;
   }
 }

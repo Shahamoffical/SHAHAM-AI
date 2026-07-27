@@ -30,6 +30,7 @@ export default function Login({ isModal, onClose }) {
         token = res.data.access_token;
       }
       localStorage.setItem("token", token);
+      localStorage.setItem("user_email", email);
       if (onClose) onClose();
       navigate("/research");
     } catch (e) {
