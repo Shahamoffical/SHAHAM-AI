@@ -741,7 +741,16 @@
 }
 
 [data-theme="light"] .gemini-mic-btn {
-  color: #64748b;
+  color: #334155;
+}
+
+[data-theme="light"] .gemini-mic-btn:hover:not(:disabled) {
+  background: rgba(15, 23, 42, 0.08) !important;
+  color: #ff5500 !important;
+}
+
+[data-theme="light"] .gemini-mic-btn:hover:not(:disabled) svg {
+  stroke: #ff5500 !important;
 }
 
 [data-theme="light"] .gemini-send-btn {

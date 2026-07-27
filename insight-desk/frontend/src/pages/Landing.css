@@ -209,16 +209,33 @@
   color: #475569;
 }
 
+[data-theme="light"] .verix-btn-started:hover {
+  background: #ff5b08;
+  color: #ffffff;
+}
+
 [data-theme="light"] .verix-btn-primary {
-  background: linear-gradient(135deg, #ff5500, #ff7700);
+  background: linear-gradient(135deg, #ff5b08, #833e02);
   color: #ffffff;
   box-shadow: 0 8px 24px rgba(15, 23, 42, 0.15);
+}
+
+[data-theme="light"] .verix-btn-primary:hover {
+  background: linear-gradient(135deg, #ff7700, #a04902) !important;
+  color: #ffffff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(255, 91, 8, 0.35);
 }
 
 [data-theme="light"] .verix-btn-secondary {
   background: rgba(15, 23, 42, 0.05);
   color: #0f172a;
   border-color: rgba(15, 23, 42, 0.15);
+}
+
+[data-theme="light"] .verix-btn-secondary:hover {
+  background: rgba(15, 23, 42, 0.1);
+  color: #0f172a;
 }
 
 /* Hero Section */
