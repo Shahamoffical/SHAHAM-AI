@@ -28,7 +28,7 @@ export default function Landing() {
       <div className="verix-bg-wrap">
         <img
           src="/verix_hero_bg.png"
-          alt="VERIX Intelligent AI Adaptation"
+          alt="SHAHAM Intelligent AI Adaptation"
           className="verix-bg-image"
         />
         <div className="verix-bg-overlay" />
@@ -37,7 +37,7 @@ export default function Landing() {
       {/* Header / Navbar */}
       <header className="verix-header">
         <div className="verix-brand" onClick={() => navigate("/")}>
-          VERIX
+          SHAHAM
         </div>
 
         <nav className="verix-nav-pills">

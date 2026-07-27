@@ -198,7 +198,7 @@ export default function Research() {
       {/* ===== TOP NAVBAR ===== */}
       <header className="verix-research-nav">
         <div className="verix-research-brand" onClick={() => navigate("/")}>
-          VERIX <span className="verix-nav-tag">AI RESEARCH</span>
+          SHAHAM <span className="verix-nav-tag">AI RESEARCH</span>
         </div>
 
         <nav className="verix-research-pills">
