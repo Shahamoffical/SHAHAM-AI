@@ -221,6 +221,14 @@ export default function Research() {
       {/* Background Ambient Glow */}
       <div className="verix-research-ambient" />
 
+      {/* Mobile Sidebar Backdrop Overlay */}
+      {sidebarOpen && (
+        <div
+          className="shaham-sidebar-backdrop"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* ===== SIDEBAR (Search History & User Profile) ===== */}
       <aside className="shaham-sidebar">
         {/* Top: Brand & New Research Button */}
@@ -358,10 +366,10 @@ export default function Research() {
 
         {/* MAIN WORKSPACE BODY */}
         <main className="verix-research-main">
-          {/* Hero Title */}
+          {/* Hero Title with Personalized Welcome */}
           <div className="verix-research-hero">
             <h1 className="verix-research-title">
-              AUTONOMOUS <span className="verix-orange-accent">AI RESEARCH</span>
+              HELLO <span className="verix-orange-accent">{displayName ? displayName.toUpperCase() : "RESEARCHER"}</span>
             </h1>
             <p className="verix-research-subtitle">
               Enter your question — our multi-agent AI engine will plan, execute search & document retrieval, and write a cited report for you.
