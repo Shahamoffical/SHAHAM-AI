@@ -20,21 +20,28 @@ export default function Login({ isModal, onClose }) {
     try {
       let token;
       if (isRegister) {
-        const res = await api.post("/auth/register", { email, password });
+        const res = await api.post("/auth/register", { email: email.trim(), password });
         token = res.data.access_token;
       } else {
         const form = new URLSearchParams();
-        form.append("username", email);
+        form.append("username", email.trim());
         form.append("password", password);
         const res = await api.post("/auth/login", form);
         token = res.data.access_token;
       }
       localStorage.setItem("token", token);
-      localStorage.setItem("user_email", email);
+      localStorage.setItem("user_email", email.trim());
       if (onClose) onClose();
       navigate("/research");
     } catch (e) {
-      setError(e.response?.data?.detail || "Something went wrong. Please try again.");
+      const errDetail = e.response?.data?.detail;
+      if (Array.isArray(errDetail)) {
+        setError("Please enter a valid email address and password.");
+      } else if (typeof errDetail === "string") {
+        setError(errDetail);
+      } else {
+        setError("Unable to complete request. Please verify your connection.");
+      }
     } finally {
       setLoading(false);
     }

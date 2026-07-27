@@ -12,7 +12,10 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 def register(data: schemas.UserCreate, db: Session = Depends(get_db)):
     existing = db.query(models.User).filter(models.User.email == data.email).first()
     if existing:
-        raise HTTPException(status_code=400, detail="Email pehle se registered hai")
+        raise HTTPException(
+            status_code=400,
+            detail="This email is already registered. Please sign in instead.",
+        )
 
     user = models.User(
         email=data.email,
@@ -31,7 +34,10 @@ def register(data: schemas.UserCreate, db: Session = Depends(get_db)):
 def login(form: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     user = db.query(models.User).filter(models.User.email == form.username).first()
     if not user or not auth.verify_password(form.password, user.hashed_password):
-        raise HTTPException(status_code=401, detail="Email ya password galat")
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid email or password. Please check your credentials.",
+        )
 
     token = auth.create_access_token({"sub": user.email})
     return schemas.Token(access_token=token)
