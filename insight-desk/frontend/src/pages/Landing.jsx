@@ -41,13 +41,13 @@ export default function Landing() {
         </div>
 
         <nav className="verix-nav-pills">
-          <button className="verix-pill-item" onClick={() => navigate("/")}>
+          <button className="verix-pill-item" onClick={() => navigate("/platform")}>
             Platform
           </button>
-          <button className="verix-pill-item" onClick={() => navigate("/")}>
+          <button className="verix-pill-item" onClick={() => navigate("/solutions")}>
             Solutions
           </button>
-          <button className="verix-pill-item" onClick={() => navigate("/")}>
+          <button className="verix-pill-item" onClick={() => navigate("/ai-engine")}>
             AI Engine
           </button>
           <button className="verix-pill-item" onClick={handleGetStarted}>

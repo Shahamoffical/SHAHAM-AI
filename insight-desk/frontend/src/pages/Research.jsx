@@ -318,8 +318,14 @@ export default function Research() {
           </div>
 
           <nav className="verix-research-pills">
-            <button className="verix-research-pill" onClick={() => navigate("/")}>
-              Landing Page
+            <button className="verix-research-pill" onClick={() => navigate("/platform")}>
+              Platform
+            </button>
+            <button className="verix-research-pill" onClick={() => navigate("/solutions")}>
+              Solutions
+            </button>
+            <button className="verix-research-pill" onClick={() => navigate("/ai-engine")}>
+              AI Engine
             </button>
             <button className="verix-research-pill verix-research-pill--active" onClick={loadHistory}>
               Research Workspace
