@@ -368,6 +368,35 @@ export default function Research() {
             </p>
           </div>
 
+          {/* Live Agent Activity Panel (Above Search Bar) */}
+          {activities.length > 0 && (
+            <div className="verix-panel verix-activity-panel" style={{ marginBottom: "24px" }}>
+              <div className="verix-panel-header">
+                <span
+                  className={`verix-activity-dot ${
+                    running ? "verix-activity-dot--running" : ""
+                  }`}
+                />
+                <span className="verix-panel-title">LIVE MULTI-AGENT ACTIVITY</span>
+              </div>
+              <div className="verix-activity-body">
+                {activities.map((a, i) => (
+                  <div className="verix-activity-row" key={i}>
+                    <span
+                      className={`verix-agent-tag verix-agent-tag--${agentClass(
+                        a.agent
+                      )}`}
+                    >
+                      {a.agent}
+                    </span>
+                    <span className="verix-activity-msg">{a.message}</span>
+                  </div>
+                ))}
+                <div ref={activityEndRef} />
+              </div>
+            </div>
+          )}
+
           {/* ===== GEMINI-STYLE STADIUM SEARCH BAR ===== */}
           <div className="gemini-stadium-card">
             {/* Top Textarea */}
@@ -479,35 +508,6 @@ export default function Research() {
 
           {/* Results Section */}
           <div className="verix-results-grid">
-            {/* Live Agent Activity Panel */}
-            {activities.length > 0 && (
-              <div className="verix-panel verix-activity-panel">
-                <div className="verix-panel-header">
-                  <span
-                    className={`verix-activity-dot ${
-                      running ? "verix-activity-dot--running" : ""
-                    }`}
-                  />
-                  <span className="verix-panel-title">LIVE MULTI-AGENT ACTIVITY</span>
-                </div>
-                <div className="verix-activity-body">
-                  {activities.map((a, i) => (
-                    <div className="verix-activity-row" key={i}>
-                      <span
-                        className={`verix-agent-tag verix-agent-tag--${agentClass(
-                          a.agent
-                        )}`}
-                      >
-                        {a.agent}
-                      </span>
-                      <span className="verix-activity-msg">{a.message}</span>
-                    </div>
-                  ))}
-                  <div ref={activityEndRef} />
-                </div>
-              </div>
-            )}
-
             {/* Generated Research Report Panel */}
             {report && (
               <div className="verix-panel verix-report-panel">
