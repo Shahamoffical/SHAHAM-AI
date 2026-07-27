@@ -364,158 +364,52 @@ export default function Research() {
           </div>
         </header>
 
-        {/* MAIN WORKSPACE BODY */}
+        {/* MAIN WORKSPACE BODY — 100vh locked, no page scroll */}
         <main className="verix-research-main">
-          {/* Hero Title with Personalized Welcome */}
-          <div className="verix-research-hero">
-            <h1 className="verix-research-title">
-              HELLO <span className="verix-orange-accent">{displayName ? displayName.toUpperCase() : "RESEARCHER"}</span>
-            </h1>
-            <p className="verix-research-subtitle">
-              Enter your question — our multi-agent AI engine will plan, execute search & document retrieval, and write a cited report for you.
-            </p>
-          </div>
 
-          {/* Live Agent Activity Panel (Above Search Bar) */}
-          {activities.length > 0 && (
-            <div className="verix-panel verix-activity-panel" style={{ marginBottom: "24px" }}>
-              <div className="verix-panel-header">
-                <span
-                  className={`verix-activity-dot ${
-                    running ? "verix-activity-dot--running" : ""
-                  }`}
-                />
-                <span className="verix-panel-title">LIVE MULTI-AGENT ACTIVITY</span>
+          {/* ===== SCROLLABLE RESPONSE AREA (above search bar) ===== */}
+          <div className="shaham-response-area">
+            {/* Hero Title — shown when no results */}
+            {!report && activities.length === 0 && (
+              <div className="verix-research-hero">
+                <h1 className="verix-research-title">
+                  HELLO <span className="verix-orange-accent">{displayName ? displayName.toUpperCase() : "RESEARCHER"}</span>
+                </h1>
+                <p className="verix-research-subtitle">
+                  Enter your question — our multi-agent AI engine will plan, execute search & document retrieval, and write a cited report for you.
+                </p>
               </div>
-              <div className="verix-activity-body">
-                {activities.map((a, i) => (
-                  <div className="verix-activity-row" key={i}>
-                    <span
-                      className={`verix-agent-tag verix-agent-tag--${agentClass(
-                        a.agent
-                      )}`}
-                    >
-                      {a.agent}
-                    </span>
-                    <span className="verix-activity-msg">{a.message}</span>
-                  </div>
-                ))}
-                <div ref={activityEndRef} />
-              </div>
-            </div>
-          )}
+            )}
 
-          {/* ===== GEMINI-STYLE STADIUM SEARCH BAR ===== */}
-          <div className="gemini-stadium-card">
-            {/* Top Textarea */}
-            <textarea
-              className="gemini-textarea"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              onKeyDown={handleKeyDown}
-              placeholder="Describe your research question..."
-              disabled={running}
-            />
-
-            {/* Bottom Bar inside Stadium Container */}
-            <div className="gemini-bottom-bar">
-              {/* Left Controls: Plus + Documents attachment button */}
-              <div className="gemini-left-actions">
-                <label className="gemini-icon-btn" title="Upload PDF or CSV Document">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <line x1="12" y1="5" x2="12" y2="19" />
-                    <line x1="5" y1="12" x2="19" y2="12" />
-                  </svg>
-                  <input
-                    type="file"
-                    accept=".pdf,.csv,.txt,.md"
-                    onChange={upload}
-                    className="gemini-file-input"
-                  />
-                </label>
-
-                <label className="gemini-pill-btn">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
-                    <polyline points="14 2 14 8 20 8" />
-                  </svg>
-                  <span>Documents</span>
-                  <input
-                    type="file"
-                    accept=".pdf,.csv,.txt,.md"
-                    onChange={upload}
-                    className="gemini-file-input"
-                  />
-                </label>
-
-                {uploadMsg && (
+            {/* Live Agent Activity Panel */}
+            {activities.length > 0 && (
+              <div className="verix-panel verix-activity-panel">
+                <div className="verix-panel-header">
                   <span
-                    className={`gemini-upload-status ${
-                      uploadStatus === "success"
-                        ? "gemini-upload-status--success"
-                        : uploadStatus === "error"
-                        ? "gemini-upload-status--error"
-                        : ""
+                    className={`verix-activity-dot ${
+                      running ? "verix-activity-dot--running" : ""
                     }`}
-                  >
-                    {uploadMsg}
-                  </span>
-                )}
+                  />
+                  <span className="verix-panel-title">LIVE MULTI-AGENT ACTIVITY</span>
+                </div>
+                <div className="verix-activity-body">
+                  {activities.map((a, i) => (
+                    <div className="verix-activity-row" key={i}>
+                      <span
+                        className={`verix-agent-tag verix-agent-tag--${agentClass(
+                          a.agent
+                        )}`}
+                      >
+                        {a.agent}
+                      </span>
+                      <span className="verix-activity-msg">{a.message}</span>
+                    </div>
+                  ))}
+                  <div ref={activityEndRef} />
+                </div>
               </div>
+            )}
 
-              {/* Right Controls: Pro Selector, Microphone, Submit */}
-              <div className="gemini-right-actions">
-                {/* Pro Dropdown Selector */}
-                <button
-                  type="button"
-                  className="gemini-pro-pill"
-                  onClick={() => setModelMode(modelMode === "Pro" ? "Ultra" : "Pro")}
-                  title="Model Mode"
-                >
-                  <span>{modelMode}</span>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <polyline points="6 9 12 15 18 9" />
-                  </svg>
-                </button>
-
-                {/* Voice Typing Microphone */}
-                <button
-                  type="button"
-                  className={`gemini-mic-btn ${isListening ? "gemini-mic-btn--active" : ""}`}
-                  onClick={toggleVoiceTyping}
-                  disabled={running}
-                  title={isListening ? "Stop Voice Typing" : "Voice Typing"}
-                >
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z" />
-                    <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
-                    <line x1="12" x2="12" y1="19" y2="22" />
-                  </svg>
-                </button>
-
-                {/* Submit Arrow Button */}
-                <button
-                  type="button"
-                  className="gemini-send-btn"
-                  onClick={startResearch}
-                  disabled={running || !query.trim()}
-                  title="Start Research"
-                >
-                  {running ? (
-                    <span className="gemini-spinner" />
-                  ) : (
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <line x1="12" y1="19" x2="12" y2="5" />
-                      <polyline points="5 12 12 5 19 12" />
-                    </svg>
-                  )}
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* Results Section */}
-          <div className="verix-results-grid">
             {/* Generated Research Report Panel */}
             {report && (
               <div className="verix-panel verix-report-panel">
@@ -536,6 +430,118 @@ export default function Research() {
               </div>
             )}
           </div>
+
+          {/* ===== SEARCH BAR — pinned at bottom ===== */}
+          <div className="shaham-search-bottom">
+            <div className="gemini-stadium-card">
+              {/* Top Textarea */}
+              <textarea
+                className="gemini-textarea"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                onKeyDown={handleKeyDown}
+                placeholder="Describe your research question..."
+                disabled={running}
+              />
+
+              {/* Bottom Bar inside Stadium Container */}
+              <div className="gemini-bottom-bar">
+                {/* Left Controls: Plus + Documents attachment button */}
+                <div className="gemini-left-actions">
+                  <label className="gemini-icon-btn" title="Upload PDF or CSV Document">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="12" y1="5" x2="12" y2="19" />
+                      <line x1="5" y1="12" x2="19" y2="12" />
+                    </svg>
+                    <input
+                      type="file"
+                      accept=".pdf,.csv,.txt,.md"
+                      onChange={upload}
+                      className="gemini-file-input"
+                    />
+                  </label>
+
+                  <label className="gemini-pill-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+                      <polyline points="14 2 14 8 20 8" />
+                    </svg>
+                    <span>Documents</span>
+                    <input
+                      type="file"
+                      accept=".pdf,.csv,.txt,.md"
+                      onChange={upload}
+                      className="gemini-file-input"
+                    />
+                  </label>
+
+                  {uploadMsg && (
+                    <span
+                      className={`gemini-upload-status ${
+                        uploadStatus === "success"
+                          ? "gemini-upload-status--success"
+                          : uploadStatus === "error"
+                          ? "gemini-upload-status--error"
+                          : ""
+                      }`}
+                    >
+                      {uploadMsg}
+                    </span>
+                  )}
+                </div>
+
+                {/* Right Controls: Pro Selector, Microphone, Submit */}
+                <div className="gemini-right-actions">
+                  {/* Pro Dropdown Selector */}
+                  <button
+                    type="button"
+                    className="gemini-pro-pill"
+                    onClick={() => setModelMode(modelMode === "Pro" ? "Ultra" : "Pro")}
+                    title="Model Mode"
+                  >
+                    <span>{modelMode}</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="6 9 12 15 18 9" />
+                    </svg>
+                  </button>
+
+                  {/* Voice Typing Microphone */}
+                  <button
+                    type="button"
+                    className={`gemini-mic-btn ${isListening ? "gemini-mic-btn--active" : ""}`}
+                    onClick={toggleVoiceTyping}
+                    disabled={running}
+                    title={isListening ? "Stop Voice Typing" : "Voice Typing"}
+                  >
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z" />
+                      <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                      <line x1="12" x2="12" y1="19" y2="22" />
+                    </svg>
+                  </button>
+
+                  {/* Submit Arrow Button */}
+                  <button
+                    type="button"
+                    className="gemini-send-btn"
+                    onClick={startResearch}
+                    disabled={running || !query.trim()}
+                    title="Start Research"
+                  >
+                    {running ? (
+                      <span className="gemini-spinner" />
+                    ) : (
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <line x1="12" y1="19" x2="12" y2="5" />
+                        <polyline points="5 12 12 5 19 12" />
+                      </svg>
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </main>
       </div>
     </div>
