@@ -1,0 +1,116 @@
+/* SHAHAM SOLUTIONS PAGE DESIGN SYSTEM */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap');
+
+.verix-solutions-page {
+  position: relative;
+  width: 100vw;
+  min-height: 100vh;
+  background-color: #030307;
+  color: #ffffff;
+  font-family: 'Outfit', 'Inter', sans-serif;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.verix-solutions-ambient {
+  position: fixed;
+  inset: 0;
+  background: 
+    radial-gradient(circle at 75% 25%, rgba(255, 85, 0, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 25% 75%, rgba(16, 185, 129, 0.06) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.verix-solutions-content {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 60px 24px 100px;
+  width: 100%;
+}
+
+.verix-solutions-hero {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.verix-solutions-title {
+  font-size: 3rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin: 0 0 20px 0;
+}
+
+.verix-solutions-subtitle {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.7);
+  max-width: 720px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.verix-card-tag {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #ff7700;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin-bottom: 14px;
+}
+
+.verix-solutions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 28px;
+  margin-bottom: 80px;
+}
+
+.verix-solutions-cta {
+  text-align: center;
+  background: rgba(255, 85, 0, 0.05);
+  border: 1px solid rgba(255, 85, 0, 0.2);
+  border-radius: 24px;
+  padding: 50px 30px;
+}
+
+.verix-solutions-cta h2 {
+  font-size: 2rem;
+  font-weight: 800;
+  margin: 0 0 24px 0;
+}
+
+/* LIGHT MODE OVERRIDES */
+[data-theme="light"] .verix-solutions-page {
+  background-color: #f1f5f9;
+  color: #0f172a;
+}
+
+[data-theme="light"] .verix-solutions-title {
+  color: #0f172a;
+}
+
+[data-theme="light"] .verix-solutions-subtitle {
+  color: #475569;
+}
+
+[data-theme="light"] .verix-card-tag {
+  background: rgba(255, 85, 0, 0.1);
+  color: #ff5b08;
+}
+
+[data-theme="light"] .verix-solutions-cta {
+  background: #ffffff;
+  border-color: rgba(255, 85, 0, 0.3);
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
+}
+
+[data-theme="light"] .verix-solutions-cta h2 {
+  color: #0f172a;
+}
