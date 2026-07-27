@@ -395,10 +395,14 @@
 }
 
 .gemini-send-btn:hover:not(:disabled) {
-  background: #ff5500;
-  color: #ffffff;
-  transform: scale(1.05);
-  box-shadow: 0 6px 18px rgba(255, 85, 0, 0.4);
+  background: linear-gradient(135deg, #ff5500 0%, #ff7700 100%) !important;
+  color: #ffffff !important;
+  transform: scale(1.08);
+  box-shadow: 0 6px 20px rgba(255, 85, 0, 0.5);
+}
+
+.gemini-send-btn:hover:not(:disabled) svg {
+  stroke: #ffffff !important;
 }
 
 .gemini-send-btn:disabled {
@@ -664,7 +668,7 @@
 
 /* LIGHT MODE OVERRIDES FOR RESEARCH PAGE */
 [data-theme="light"] .verix-research-page {
-  background-color: #f8fafc;
+  background-color: #c8c9c9;
   color: #0f172a;
 }
 
@@ -746,8 +750,10 @@
 }
 
 [data-theme="light"] .gemini-send-btn:hover:not(:disabled) {
-  background: #ff5500;
-  color: #ffffff;
+  background: linear-gradient(135deg, #ff5500 0%, #ff7700 100%) !important;
+  color: #ffffff !important;
+  transform: scale(1.08);
+  box-shadow: 0 6px 20px rgba(255, 85, 0, 0.5);
 }
 
 [data-theme="light"] .verix-panel {
