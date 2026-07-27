@@ -18,14 +18,17 @@ embedder = OllamaEmbeddings(**embed_kwargs)
 
 
 def _read_file(path: str) -> str:
-    """PDF ya CSV se saara text nikaalo."""
+    """PDF, CSV, TXT, ya MD file se saara text nikaalo."""
     if path.lower().endswith(".pdf"):
         reader = PdfReader(path)
         return "\n".join((page.extract_text() or "") for page in reader.pages)
     elif path.lower().endswith(".csv"):
         df = pd.read_csv(path)
         return df.to_string()
-    raise ValueError("Sirf PDF ya CSV allowed hai")
+    elif path.lower().endswith((".txt", ".md")):
+        with open(path, "r", encoding="utf-8", errors="ignore") as f:
+            return f.read()
+    raise ValueError("Sirf PDF, CSV, TXT ya MD files allowed hain")
 
 
 def ingest_document(path: str, session_id: str) -> int:

@@ -428,7 +428,7 @@ export default function Research() {
                   </svg>
                   <input
                     type="file"
-                    accept=".pdf,.csv"
+                    accept=".pdf,.csv,.txt,.md"
                     onChange={upload}
                     className="gemini-file-input"
                   />
@@ -442,7 +442,7 @@ export default function Research() {
                   <span>Documents</span>
                   <input
                     type="file"
-                    accept=".pdf,.csv"
+                    accept=".pdf,.csv,.txt,.md"
                     onChange={upload}
                     className="gemini-file-input"
                   />

@@ -26,8 +26,8 @@ def upload_document(
     file: UploadFile = File(...),
     user: models.User = Depends(auth.get_current_user),
 ):
-    if not file.filename.lower().endswith((".pdf", ".csv")):
-        return {"error": "Only PDF or CSV files are allowed"}
+    if not file.filename.lower().endswith((".pdf", ".csv", ".txt", ".md")):
+        return {"error": "Only PDF, CSV, TXT, or MD files are allowed"}
 
     path = os.path.join(UPLOAD_DIR, f"{session_id}_{file.filename}")
     with open(path, "wb") as f:
