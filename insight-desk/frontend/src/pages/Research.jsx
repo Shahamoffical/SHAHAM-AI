@@ -1,0 +1,465 @@
+import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import ReactMarkdown from "react-markdown";
+import api, { WS_URL } from "../api";
+import { useTheme } from "../context/ThemeContext";
+import "./Research.css";
+
+export default function Research() {
+  const [query, setQuery] = useState("");
+  const [sessionId] = useState(() => "s_" + Date.now());
+  const [activities, setActivities] = useState([]);
+  const [report, setReport] = useState("");
+  const [running, setRunning] = useState(false);
+  const [uploadMsg, setUploadMsg] = useState("");
+  const [uploadStatus, setUploadStatus] = useState("");
+  const [history, setHistory] = useState([]);
+  const [viewingReport, setViewingReport] = useState(null);
+  const [isListening, setIsListening] = useState(false);
+  const [modelMode, setModelMode] = useState("Pro");
+  const recognitionRef = useRef(null);
+  const baseQueryRef = useRef("");
+  const wsRef = useRef(null);
+  const activityEndRef = useRef(null);
+  const navigate = useNavigate();
+  const { theme, toggleTheme } = useTheme();
+
+  // Initialize Web Speech API for Voice Typing
+  useEffect(() => {
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SpeechRecognition) {
+      const recognition = new SpeechRecognition();
+      recognition.continuous = true;
+      recognition.interimResults = true;
+      recognition.lang = "en-US";
+
+      recognition.onresult = (event) => {
+        let interim = "";
+        for (let i = 0; i < event.results.length; i++) {
+          interim += event.results[i][0].transcript;
+        }
+        setQuery(baseQueryRef.current + interim);
+      };
+
+      recognition.onerror = () => setIsListening(false);
+      recognition.onend = () => setIsListening(false);
+
+      recognitionRef.current = recognition;
+    }
+  }, []);
+
+  const toggleVoiceTyping = () => {
+    if (!recognitionRef.current) {
+      alert("Voice typing is not supported by your browser. Please use Chrome, Edge, or Safari.");
+      return;
+    }
+
+    if (isListening) {
+      recognitionRef.current.stop();
+      setIsListening(false);
+    } else {
+      baseQueryRef.current = query ? query.trim() + " " : "";
+      try {
+        recognitionRef.current.start();
+        setIsListening(true);
+      } catch {
+        setIsListening(false);
+      }
+    }
+  };
+
+  // Auto-scroll activity panel
+  useEffect(() => {
+    activityEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [activities]);
+
+  // Load history on mount
+  useEffect(() => {
+    loadHistory();
+  }, []);
+
+  const loadHistory = async () => {
+    try {
+      const res = await api.get("/sessions");
+      setHistory(res.data);
+    } catch {
+      // ignore
+    }
+  };
+
+  const viewSession = async (id) => {
+    try {
+      const res = await api.get(`/sessions/${id}`);
+      setViewingReport(res.data);
+      setReport(res.data.report);
+      setActivities([]);
+    } catch {
+      // ignore
+    }
+  };
+
+  // PDF/CSV upload
+  const upload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const fd = new FormData();
+    fd.append("file", file);
+    setUploadMsg("Uploading & indexing...");
+    setUploadStatus("");
+    try {
+      const res = await api.post(`/upload?session_id=${sessionId}`, fd);
+      if (res.data.error) {
+        setUploadMsg(res.data.error);
+        setUploadStatus("error");
+      } else {
+        setUploadMsg(`✓ ${res.data.filename} — ${res.data.message}`);
+        setUploadStatus("success");
+      }
+    } catch {
+      setUploadMsg("Upload failed");
+      setUploadStatus("error");
+    }
+  };
+
+  // Research start via WebSocket
+  const startResearch = () => {
+    if (!query.trim()) return;
+    setActivities([]);
+    setReport("");
+    setViewingReport(null);
+    setRunning(true);
+
+    const ws = new WebSocket(WS_URL);
+    wsRef.current = ws;
+
+    ws.onopen = () => {
+      ws.send(
+        JSON.stringify({
+          token: localStorage.getItem("token"),
+          query,
+          session_id: sessionId,
+        })
+      );
+    };
+
+    ws.onmessage = (evt) => {
+      const data = JSON.parse(evt.data);
+      if (data.type === "activity") {
+        setActivities((prev) => [
+          ...prev,
+          { agent: data.agent, message: data.message },
+        ]);
+      } else if (data.type === "report") {
+        setReport(data.report);
+      } else if (data.type === "done") {
+        setRunning(false);
+        ws.close();
+        loadHistory();
+      } else if (data.type === "error") {
+        setActivities((prev) => [
+          ...prev,
+          { agent: "System", message: "Error: " + data.message },
+        ]);
+        setRunning(false);
+        ws.close();
+      }
+    };
+
+    ws.onerror = () => setRunning(false);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && (e.ctrlKey || e.metaKey) && !running) {
+      startResearch();
+    }
+  };
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
+
+  const agentClass = (agent) => {
+    const map = {
+      Planner: "planner",
+      Research: "research",
+      Writer: "writer",
+      System: "system",
+    };
+    return map[agent] || "system";
+  };
+
+  return (
+    <div className="verix-research-page">
+      {/* Background Ambient Glow */}
+      <div className="verix-research-ambient" />
+
+      {/* ===== TOP NAVBAR ===== */}
+      <header className="verix-research-nav">
+        <div className="verix-research-brand" onClick={() => navigate("/")}>
+          VERIX <span className="verix-nav-tag">AI RESEARCH</span>
+        </div>
+
+        <nav className="verix-research-pills">
+          <button className="verix-research-pill" onClick={() => navigate("/")}>
+            Landing Page
+          </button>
+          <button className="verix-research-pill verix-research-pill--active" onClick={loadHistory}>
+            Research Workspace
+          </button>
+        </nav>
+
+        <div className="verix-research-user-actions">
+          {/* Theme Toggle Button */}
+          <button
+            type="button"
+            className="verix-theme-toggle"
+            onClick={toggleTheme}
+            title={theme === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode"}
+          >
+            {theme === "dark" ? (
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="5" />
+                <line x1="12" y1="1" x2="12" y2="3" />
+                <line x1="12" y1="21" x2="12" y2="23" />
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                <line x1="1" y1="12" x2="3" y2="12" />
+                <line x1="21" y1="12" x2="23" y2="12" />
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+              </svg>
+            ) : (
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+              </svg>
+            )}
+          </button>
+
+          <button className="verix-research-btn-outline" onClick={loadHistory}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+              <path d="M3 3v5h5" />
+              <path d="M12 7v5l4 2" />
+            </svg>
+            History
+          </button>
+
+          <button className="verix-research-btn-logout" onClick={logout}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+              <polyline points="16 17 21 12 16 7" />
+              <line x1="21" x2="9" y1="12" y2="12" />
+            </svg>
+            Logout
+          </button>
+        </div>
+      </header>
+
+      {/* ===== MAIN CONTENT CONTAINER ===== */}
+      <main className="verix-research-main">
+        {/* Hero Title */}
+        <div className="verix-research-hero">
+          <h1 className="verix-research-title">
+            AUTONOMOUS <span className="verix-orange-accent">AI RESEARCH</span>
+          </h1>
+          <p className="verix-research-subtitle">
+            Enter your question — our multi-agent AI engine will plan, execute search & document retrieval, and write a cited report for you.
+          </p>
+        </div>
+
+        {/* ===== GEMINI-STYLE STADIUM SEARCH BAR ===== */}
+        <div className="gemini-stadium-card">
+          {/* Top Textarea */}
+          <textarea
+            className="gemini-textarea"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder="Describe your research question..."
+            disabled={running}
+          />
+
+          {/* Bottom Bar inside Stadium Container */}
+          <div className="gemini-bottom-bar">
+            {/* Left Controls: Plus + Documents attachment button */}
+            <div className="gemini-left-actions">
+              <label className="gemini-icon-btn" title="Upload PDF or CSV Document">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="12" y1="5" x2="12" y2="19" />
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+                <input
+                  type="file"
+                  accept=".pdf,.csv"
+                  onChange={upload}
+                  className="gemini-file-input"
+                />
+              </label>
+
+              <label className="gemini-pill-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+                  <polyline points="14 2 14 8 20 8" />
+                </svg>
+                <span>Documents</span>
+                <input
+                  type="file"
+                  accept=".pdf,.csv"
+                  onChange={upload}
+                  className="gemini-file-input"
+                />
+              </label>
+
+              {uploadMsg && (
+                <span
+                  className={`gemini-upload-status ${
+                    uploadStatus === "success"
+                      ? "gemini-upload-status--success"
+                      : uploadStatus === "error"
+                      ? "gemini-upload-status--error"
+                      : ""
+                  }`}
+                >
+                  {uploadMsg}
+                </span>
+              )}
+            </div>
+
+            {/* Right Controls: Pro Selector, Microphone, Submit */}
+            <div className="gemini-right-actions">
+              {/* Pro Dropdown Selector */}
+              <button
+                type="button"
+                className="gemini-pro-pill"
+                onClick={() => setModelMode(modelMode === "Pro" ? "Ultra" : "Pro")}
+                title="Model Mode"
+              >
+                <span>{modelMode}</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="6 9 12 15 18 9" />
+                </svg>
+              </button>
+
+              {/* Voice Typing Microphone */}
+              <button
+                type="button"
+                className={`gemini-mic-btn ${isListening ? "gemini-mic-btn--active" : ""}`}
+                onClick={toggleVoiceTyping}
+                disabled={running}
+                title={isListening ? "Stop Voice Typing" : "Voice Typing"}
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z" />
+                  <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                  <line x1="12" x2="12" y1="19" y2="22" />
+                </svg>
+              </button>
+
+              {/* Submit Arrow Button */}
+              <button
+                type="button"
+                className="gemini-send-btn"
+                onClick={startResearch}
+                disabled={running || !query.trim()}
+                title="Start Research"
+              >
+                {running ? (
+                  <span className="gemini-spinner" />
+                ) : (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="12" y1="19" x2="12" y2="5" />
+                    <polyline points="5 12 12 5 19 12" />
+                  </svg>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Results Section */}
+        <div className="verix-results-grid">
+          {/* Live Agent Activity Panel */}
+          {activities.length > 0 && (
+            <div className="verix-panel verix-activity-panel">
+              <div className="verix-panel-header">
+                <span
+                  className={`verix-activity-dot ${
+                    running ? "verix-activity-dot--running" : ""
+                  }`}
+                />
+                <span className="verix-panel-title">LIVE MULTI-AGENT ACTIVITY</span>
+              </div>
+              <div className="verix-activity-body">
+                {activities.map((a, i) => (
+                  <div className="verix-activity-row" key={i}>
+                    <span
+                      className={`verix-agent-tag verix-agent-tag--${agentClass(
+                        a.agent
+                      )}`}
+                    >
+                      {a.agent}
+                    </span>
+                    <span className="verix-activity-msg">{a.message}</span>
+                  </div>
+                ))}
+                <div ref={activityEndRef} />
+              </div>
+            </div>
+          )}
+
+          {/* Generated Research Report Panel */}
+          {report && (
+            <div className="verix-panel verix-report-panel">
+              <div className="verix-panel-header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+                  <polyline points="14 2 14 8 20 8" />
+                  <line x1="16" x2="8" y1="13" y2="13" />
+                  <line x1="16" x2="8" y1="17" y2="17" />
+                </svg>
+                <span className="verix-panel-title">
+                  {viewingReport ? "SAVED REPORT" : "SYNTHESIZED RESEARCH REPORT"}
+                </span>
+              </div>
+              <div className="verix-report-markdown">
+                <ReactMarkdown>{report}</ReactMarkdown>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Historical Research Sessions */}
+        {history.length > 0 && (
+          <div className="verix-history-section">
+            <div className="verix-history-header">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                <path d="M3 3v5h5" />
+                <path d="M12 7v5l4 2" />
+              </svg>
+              <span>PAST RESEARCH SESSIONS</span>
+            </div>
+
+            <div className="verix-history-grid">
+              {history.map((s) => (
+                <div
+                  className="verix-history-card"
+                  key={s.id}
+                  onClick={() => viewSession(s.id)}
+                >
+                  <div className="verix-history-card-query">{s.query}</div>
+                  <div className="verix-history-card-footer">
+                    <span className="verix-history-card-date">{s.created_at}</span>
+                    <span className="verix-history-card-view">View Report &rarr;</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </main>
+    </div>
+  );
+}

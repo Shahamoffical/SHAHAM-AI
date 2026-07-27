@@ -1,0 +1,811 @@
+/* VERIX AI RESEARCH WORKSPACE DESIGN SYSTEM */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap');
+
+.verix-research-page {
+  position: relative;
+  min-height: 100vh;
+  width: 100vw;
+  background-color: #030307;
+  color: #ffffff;
+  font-family: 'Outfit', 'Inter', sans-serif;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Ambient Radial Glow */
+.verix-research-ambient {
+  position: fixed;
+  inset: 0;
+  background: 
+    radial-gradient(circle at 50% 10%, rgba(255, 85, 0, 0.06) 0%, transparent 50%),
+    radial-gradient(circle at 90% 80%, rgba(99, 102, 241, 0.04) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Top Navbar (VERIX Glassmorphic Header) */
+.verix-research-nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 48px;
+  background: rgba(3, 3, 7, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.verix-research-brand {
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #ffffff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.verix-nav-tag {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  padding: 3px 10px;
+  background: rgba(255, 85, 0, 0.15);
+  border: 1px solid rgba(255, 85, 0, 0.3);
+  color: #ff5500;
+  border-radius: 9999px;
+}
+
+.verix-research-pills {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 6px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 9999px;
+}
+
+.verix-research-pill {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 0.82rem;
+  font-weight: 500;
+  padding: 8px 18px;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.verix-research-pill:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.verix-research-pill--active {
+  color: #ffffff;
+  background: rgba(255, 85, 0, 0.2);
+  border: 1px solid rgba(255, 85, 0, 0.35);
+}
+
+.verix-research-user-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.verix-research-btn-outline {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.verix-research-btn-outline:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.verix-research-btn-outline svg {
+  width: 15px;
+  height: 15px;
+}
+
+.verix-research-btn-logout {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  border: 1px solid rgba(244, 63, 94, 0.25);
+  border-radius: 9999px;
+  background: rgba(244, 63, 94, 0.08);
+  color: #fca5a5;
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.verix-research-btn-logout:hover {
+  background: rgba(244, 63, 94, 0.2);
+  border-color: rgba(244, 63, 94, 0.4);
+  color: #ffffff;
+}
+
+.verix-research-btn-logout svg {
+  width: 15px;
+  height: 15px;
+}
+
+/* Main Content Area */
+.verix-research-main {
+  position: relative;
+  z-index: 1;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 48px 24px 80px;
+  width: 100%;
+}
+
+/* Hero Header */
+.verix-research-hero {
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+.verix-research-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin: 0 0 12px 0;
+}
+
+.verix-orange-accent {
+  background: linear-gradient(135deg, #ff5500, #ff7700);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.verix-research-subtitle {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.98rem;
+  max-width: 620px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* ===== GEMINI STADIUM SEARCH BAR ===== */
+.gemini-stadium-card {
+  background: #1c1c22;
+  border-radius: 28px;
+  padding: 20px 24px 14px 24px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+  margin-bottom: 36px;
+  transition: all 0.25s ease;
+}
+
+.gemini-stadium-card:focus-within {
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 85, 0, 0.1);
+}
+
+.gemini-textarea {
+  width: 100%;
+  min-height: 56px;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #ffffff;
+  font-size: 1.05rem;
+  line-height: 1.5;
+  resize: none;
+  font-family: 'Inter', sans-serif;
+}
+
+.gemini-textarea::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* Bottom Controls Row Inside Stadium */
+.gemini-bottom-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 14px;
+  gap: 12px;
+}
+
+.gemini-left-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.gemini-file-input {
+  display: none;
+}
+
+/* Plus + Button */
+.gemini-icon-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.gemini-icon-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+}
+
+.gemini-icon-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Documents Pill Button */
+.gemini-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.gemini-pill-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+}
+
+.gemini-pill-btn svg {
+  width: 15px;
+  height: 15px;
+}
+
+.gemini-upload-status {
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin-left: 6px;
+}
+
+.gemini-upload-status--success {
+  color: #34d399;
+}
+
+.gemini-upload-status--error {
+  color: #f87171;
+}
+
+/* Right Controls */
+.gemini-right-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Pro Dropdown Selector */
+.gemini-pro-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 12px;
+  border-radius: 9999px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.gemini-pro-pill:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+.gemini-pro-pill svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* Voice Microphone Button */
+.gemini-mic-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.gemini-mic-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.gemini-mic-btn--active {
+  background: rgba(239, 68, 68, 0.2) !important;
+  color: #fca5a5 !important;
+  animation: pulse-mic 1.5s infinite;
+}
+
+.gemini-mic-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Submit Send Button */
+.gemini-send-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: none;
+  color: #030307;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15);
+}
+
+.gemini-send-btn:hover:not(:disabled) {
+  background: #ff5500;
+  color: #ffffff;
+  transform: scale(1.05);
+  box-shadow: 0 6px 18px rgba(255, 85, 0, 0.4);
+}
+
+.gemini-send-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.gemini-send-btn svg {
+  width: 17px;
+  height: 17px;
+}
+
+.gemini-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  border-top-color: #000;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse-mic {
+  0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+
+/* Results Grid & Glass Panels */
+.verix-results-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 28px;
+}
+
+.verix-panel {
+  background: rgba(14, 14, 20, 0.85);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6);
+}
+
+.verix-panel-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.verix-panel-header svg {
+  width: 18px;
+  height: 18px;
+  color: #ff5500;
+}
+
+.verix-panel-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.verix-activity-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #34d399;
+  box-shadow: 0 0 10px rgba(52, 211, 153, 0.6);
+}
+
+.verix-activity-dot--running {
+  animation: dotPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes dotPulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 10px rgba(52, 211, 153, 0.6); }
+  50% { opacity: 0.4; box-shadow: 0 0 18px rgba(52, 211, 153, 0.9); }
+}
+
+.verix-activity-body {
+  padding: 18px 24px;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.verix-activity-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.verix-activity-row:last-child {
+  border-bottom: none;
+}
+
+.verix-agent-tag {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.verix-agent-tag--planner {
+  background: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.verix-agent-tag--research {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.verix-agent-tag--writer {
+  background: rgba(168, 85, 247, 0.15);
+  color: #c084fc;
+  border: 1px solid rgba(168, 85, 247, 0.3);
+}
+
+.verix-agent-tag--system {
+  background: rgba(239, 68, 68, 0.15);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.verix-activity-msg {
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.verix-report-markdown {
+  padding: 28px;
+  line-height: 1.75;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.verix-report-markdown h1 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 16px 0;
+}
+
+.verix-report-markdown h2 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #ff5500;
+  margin: 28px 0 12px 0;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.verix-report-markdown p {
+  margin: 10px 0;
+}
+
+.verix-report-markdown ul,
+.verix-report-markdown ol {
+  padding-left: 24px;
+  margin: 10px 0;
+}
+
+.verix-report-markdown li {
+  margin: 6px 0;
+}
+
+.verix-report-markdown code {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffaa00;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.88em;
+}
+
+/* History Section */
+.verix-history-section {
+  margin-top: 48px;
+}
+
+.verix-history-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 20px;
+}
+
+.verix-history-header svg {
+  width: 16px;
+  height: 16px;
+}
+
+.verix-history-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.verix-history-card {
+  background: rgba(14, 14, 20, 0.85);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.verix-history-card:hover {
+  background: rgba(255, 85, 0, 0.05);
+  border-color: rgba(255, 85, 0, 0.35);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+}
+
+.verix-history-card-query {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #ffffff;
+  line-height: 1.5;
+  margin-bottom: 16px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.verix-history-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.78rem;
+}
+
+.verix-history-card-date {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.verix-history-card-view {
+  color: #ff5500;
+  font-weight: 600;
+}
+
+/* LIGHT MODE OVERRIDES FOR RESEARCH PAGE */
+[data-theme="light"] .verix-research-page {
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+
+[data-theme="light"] .verix-research-nav {
+  background: rgba(255, 255, 255, 0.85);
+  border-bottom-color: rgba(15, 23, 42, 0.08);
+}
+
+[data-theme="light"] .verix-research-brand {
+  color: #0f172a;
+}
+
+[data-theme="light"] .verix-research-pills {
+  background: rgba(15, 23, 42, 0.05);
+  border-color: rgba(15, 23, 42, 0.1);
+}
+
+[data-theme="light"] .verix-research-pill {
+  color: #64748b;
+}
+
+[data-theme="light"] .verix-research-pill:hover {
+  color: #0f172a;
+  background: rgba(15, 23, 42, 0.08);
+}
+
+[data-theme="light"] .verix-research-btn-outline {
+  background: rgba(15, 23, 42, 0.04);
+  border-color: rgba(15, 23, 42, 0.12);
+  color: #334155;
+}
+
+[data-theme="light"] .verix-research-title {
+  color: #0f172a;
+}
+
+[data-theme="light"] .verix-research-subtitle {
+  color: #64748b;
+}
+
+[data-theme="light"] .gemini-stadium-card {
+  background: #ffffff;
+  border-color: rgba(15, 23, 42, 0.12);
+  box-shadow: 0 12px 40px rgba(15, 23, 42, 0.08);
+}
+
+[data-theme="light"] .gemini-textarea {
+  color: #0f172a;
+}
+
+[data-theme="light"] .gemini-textarea::placeholder {
+  color: #94a3b8;
+}
+
+[data-theme="light"] .gemini-icon-btn,
+[data-theme="light"] .gemini-pill-btn {
+  background: rgba(15, 23, 42, 0.05);
+  color: #334155;
+}
+
+[data-theme="light"] .gemini-icon-btn:hover,
+[data-theme="light"] .gemini-pill-btn:hover {
+  background: rgba(15, 23, 42, 0.1);
+  color: #0f172a;
+}
+
+[data-theme="light"] .gemini-pro-pill {
+  border-color: rgba(15, 23, 42, 0.15);
+  color: #334155;
+}
+
+[data-theme="light"] .gemini-mic-btn {
+  color: #64748b;
+}
+
+[data-theme="light"] .gemini-send-btn {
+  background: #0f172a;
+  color: #ffffff;
+}
+
+[data-theme="light"] .gemini-send-btn:hover:not(:disabled) {
+  background: #ff5500;
+  color: #ffffff;
+}
+
+[data-theme="light"] .verix-panel {
+  background: #ffffff;
+  border-color: rgba(15, 23, 42, 0.08);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+}
+
+[data-theme="light"] .verix-panel-header {
+  background: rgba(15, 23, 42, 0.02);
+  border-bottom-color: rgba(15, 23, 42, 0.06);
+}
+
+[data-theme="light"] .verix-panel-title {
+  color: #334155;
+}
+
+[data-theme="light"] .verix-activity-msg {
+  color: #334155;
+}
+
+[data-theme="light"] .verix-report-markdown {
+  color: #1e293b;
+}
+
+[data-theme="light"] .verix-report-markdown h1 {
+  color: #0f172a;
+}
+
+[data-theme="light"] .verix-history-card {
+  background: #ffffff;
+  border-color: rgba(15, 23, 42, 0.08);
+}
+
+[data-theme="light"] .verix-history-card-query {
+  color: #0f172a;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .verix-research-nav {
+    padding: 16px 20px;
+  }
+
+  .verix-research-pills {
+    display: none;
+  }
+
+  .verix-research-main {
+    padding: 28px 16px 60px;
+  }
+
+  .verix-research-title {
+    font-size: 1.8rem;
+  }
+
+  .gemini-stadium-card {
+    padding: 16px;
+    border-radius: 20px;
+  }
+}

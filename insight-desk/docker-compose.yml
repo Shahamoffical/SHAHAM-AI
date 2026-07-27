@@ -1,0 +1,53 @@
+services:
+  db:
+    image: postgres:16
+    container_name: insight-db
+    environment:
+      POSTGRES_USER: insight
+      POSTGRES_PASSWORD: insight
+      POSTGRES_DB: insightdesk
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U insight -d insightdesk"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: insight-desk-backend:latest
+    container_name: insight-backend
+    restart: on-failure
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://insight:insight@db:5432/insightdesk
+      SECRET_KEY: change-this-secret
+      OLLAMA_MODEL: llama3.2
+      EMBED_MODEL: nomic-embed-text
+      OLLAMA_HOST: http://host.docker.internal:11434
+    ports:
+      - "8000:8000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: insight-desk-frontend:latest
+    container_name: insight-frontend
+    restart: on-failure
+    depends_on:
+      - backend
+    ports:
+      - "5173:5173"
+
+volumes:
+  pgdata:

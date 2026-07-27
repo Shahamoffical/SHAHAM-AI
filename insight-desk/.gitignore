@@ -1,0 +1,32 @@
+# Virtual Environments
+venv/
+.venv/
+env/
+ENV/
+
+# Python cache & artifacts
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite
+*.sqlite3
+
+# Uploads & Vector Store
+backend/uploads/
+uploads/
+chroma_store/
+backend/chroma_store/
+
+# Node & Frontend
+node_modules/
+frontend/node_modules/
+dist/
+frontend/dist/
+.vite/
+
+# Environment & Logs
+.env
+*.log
+.DS_Store

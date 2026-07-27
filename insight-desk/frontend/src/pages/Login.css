@@ -1,0 +1,379 @@
+/* HEXTASTUDIO AUTH SYSTEM DESIGN */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap');
+
+/* Full Page Wrapper */
+.hexta-page {
+  min-height: 100vh;
+  width: 100vw;
+  background-color: #000000;
+  color: #ffffff;
+  font-family: 'Outfit', 'Inter', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-x: hidden;
+}
+
+/* Modal Popup Wrapper */
+.hexta-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: modalFadeIn 0.3s ease;
+}
+
+.hexta-modal-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 1100px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 24px;
+  background: #000000;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.9), 0 0 40px rgba(255, 85, 0, 0.15);
+}
+
+.hexta-modal-close {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  z-index: 20;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: #ffffff;
+  font-size: 1.8rem;
+  line-height: 1;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.hexta-modal-close:hover {
+  background: rgba(255, 85, 0, 0.2);
+  color: #ff5500;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Main Split Grid Container */
+.hexta-auth-container {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  width: 100%;
+  max-width: 1200px;
+  min-height: 85vh;
+  background: #000000;
+  position: relative;
+}
+
+.hexta-auth-container--modal {
+  min-height: 620px;
+}
+
+/* LEFT COLUMN: Text & 3D Robot Image */
+.hexta-auth-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 64px 48px 0 64px;
+  position: relative;
+  background: radial-gradient(circle at 40% 60%, rgba(30, 30, 50, 0.3) 0%, transparent 70%);
+}
+
+.hexta-auth-headline {
+  font-size: 3.2rem;
+  line-height: 1.1;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin: 0;
+  text-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+}
+
+.hexta-cyborg-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.hexta-cyborg-img {
+  width: 100%;
+  max-width: 440px;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.9));
+}
+
+/* RIGHT COLUMN: Form Box */
+.hexta-auth-right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 64px 64px 32px;
+}
+
+.hexta-form-box {
+  width: 100%;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Geometric Orange Logo Icon */
+.hexta-logo-icon {
+  width: 36px;
+  height: 36px;
+  color: #ff5500;
+  margin-bottom: 24px;
+  transform: rotate(45deg);
+  filter: drop-shadow(0 0 12px rgba(255, 85, 0, 0.6));
+}
+
+.hexta-logo-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.hexta-form-title {
+  font-size: 1.85rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 6px 0;
+  letter-spacing: -0.01em;
+}
+
+.hexta-form-subtitle {
+  font-size: 0.84rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0 0 32px 0;
+  line-height: 1.4;
+}
+
+/* Form & Input Fields */
+.hexta-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.hexta-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hexta-label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.hexta-input {
+  width: 100%;
+  height: 46px;
+  padding: 0 16px;
+  background: #111116;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  color: #ffffff;
+  font-size: 0.88rem;
+  outline: none;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.hexta-input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.hexta-input:focus {
+  border-color: #ff5500;
+  box-shadow: 0 0 0 3px rgba(255, 85, 0, 0.15);
+  background: #14141c;
+}
+
+/* Password input with eye toggle */
+.hexta-password-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.hexta-input--password {
+  padding-right: 44px;
+}
+
+.hexta-password-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  transition: color 0.2s ease;
+}
+
+.hexta-password-toggle:hover {
+  color: #ffffff;
+}
+
+.hexta-password-toggle svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Checkbox */
+.hexta-checkbox-wrap {
+  display: flex;
+  align-items: center;
+  margin-top: 2px;
+}
+
+.hexta-checkbox-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  user-select: none;
+}
+
+.hexta-checkbox-input {
+  display: none;
+}
+
+.hexta-checkbox-custom {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: #111116;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.hexta-checkbox-input:checked + .hexta-checkbox-custom {
+  background: #ff5500;
+  border-color: #ff5500;
+}
+
+.hexta-checkbox-input:checked + .hexta-checkbox-custom::after {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 2px;
+  width: 4px;
+  height: 8px;
+  border: solid #ffffff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* Error Message */
+.hexta-error-msg {
+  font-size: 0.8rem;
+  color: #ff4d4d;
+  background: rgba(255, 77, 77, 0.1);
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 77, 77, 0.2);
+}
+
+/* Submit Button */
+.hexta-btn-orange {
+  width: 100%;
+  height: 48px;
+  background: linear-gradient(135deg, #ff5500 0%, #ff7700 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 9999px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 24px rgba(255, 85, 0, 0.45);
+  margin-top: 8px;
+  font-family: inherit;
+}
+
+.hexta-btn-orange:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(255, 85, 0, 0.65);
+}
+
+.hexta-btn-orange:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* Bottom Footer Switcher */
+.hexta-footer-toggle {
+  margin-top: 24px;
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.5);
+  text-align: left;
+}
+
+.hexta-toggle-link {
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0 2px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s ease;
+  font-family: inherit;
+}
+
+.hexta-toggle-link:hover {
+  color: #ff5500;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .hexta-auth-container {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .hexta-auth-left {
+    padding: 40px 24px 0;
+    align-items: center;
+    text-align: center;
+  }
+
+  .hexta-auth-headline {
+    font-size: 2.2rem;
+  }
+
+  .hexta-auth-right {
+    padding: 32px 24px 48px;
+  }
+}

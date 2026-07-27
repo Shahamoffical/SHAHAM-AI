@@ -1,0 +1,340 @@
+/* VERIX LANDING PAGE DESIGN SYSTEM */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap');
+
+.verix-landing {
+  position: relative;
+  width: 100vw;
+  min-height: 100vh;
+  background-color: #030307;
+  color: #ffffff;
+  font-family: 'Outfit', 'Inter', sans-serif;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Background Graphic & Overlay */
+.verix-bg-wrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.verix-bg-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center right;
+  opacity: 0.85;
+  filter: contrast(1.1) brightness(0.95);
+  transform: scale(1.02);
+  transition: transform 10s ease-out;
+}
+
+.verix-bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse at 30% 50%, rgba(3, 3, 7, 0.3) 0%, rgba(3, 3, 7, 0.85) 75%),
+    linear-gradient(to right, rgba(3, 3, 7, 0.95) 0%, rgba(3, 3, 7, 0.4) 50%, rgba(3, 3, 7, 0.7) 100%),
+    linear-gradient(to bottom, rgba(3, 3, 7, 0.8) 0%, transparent 20%, transparent 80%, rgba(3, 3, 7, 0.95) 100%);
+  pointer-events: none;
+}
+
+/* Header & Navigation */
+.verix-header {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 56px;
+  width: 100%;
+}
+
+.verix-brand {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #ffffff;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Center Pill Nav Bar */
+.verix-nav-pills {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 6px;
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 9999px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+.verix-pill-item {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.82rem;
+  font-weight: 500;
+  padding: 8px 18px;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: inherit;
+}
+
+.verix-pill-item:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* Header Actions Container */
+.verix-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.verix-theme-toggle {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.verix-theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.18);
+  transform: rotate(15deg);
+}
+
+.verix-theme-toggle svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Top Right Get Started Button */
+.verix-btn-started {
+  background: #ffffff;
+  color: #030307;
+  border: none;
+  font-size: 0.84rem;
+  font-weight: 600;
+  padding: 10px 24px;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 14px rgba(255, 255, 255, 0.15);
+  font-family: inherit;
+}
+
+.verix-btn-started:hover {
+  background: rgba(255, 255, 255, 0.9);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.25);
+}
+
+/* LIGHT MODE OVERRIDES FOR LANDING PAGE */
+[data-theme="light"] .verix-landing {
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+
+[data-theme="light"] .verix-bg-overlay {
+  background: 
+    radial-gradient(ellipse at 30% 50%, rgba(248, 250, 252, 0.4) 0%, rgba(248, 250, 252, 0.85) 75%),
+    linear-gradient(to right, rgba(248, 250, 252, 0.95) 0%, rgba(248, 250, 252, 0.4) 50%, rgba(248, 250, 252, 0.7) 100%),
+    linear-gradient(to bottom, rgba(248, 250, 252, 0.8) 0%, transparent 20%, transparent 80%, rgba(248, 250, 252, 0.95) 100%);
+}
+
+[data-theme="light"] .verix-brand {
+  color: #0f172a;
+}
+
+[data-theme="light"] .verix-nav-pills {
+  background: rgba(15, 23, 42, 0.06);
+  border-color: rgba(15, 23, 42, 0.1);
+}
+
+[data-theme="light"] .verix-pill-item {
+  color: #475569;
+}
+
+[data-theme="light"] .verix-pill-item:hover {
+  color: #0f172a;
+  background: rgba(15, 23, 42, 0.08);
+}
+
+[data-theme="light"] .verix-theme-toggle {
+  background: rgba(15, 23, 42, 0.06);
+  border-color: rgba(15, 23, 42, 0.12);
+  color: #0f172a;
+}
+
+[data-theme="light"] .verix-btn-started {
+  background: #0f172a;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.15);
+}
+
+[data-theme="light"] .verix-hero-title {
+  color: #0f172a;
+  text-shadow: none;
+}
+
+[data-theme="light"] .verix-hero-accent {
+  background: linear-gradient(135deg, #0f172a 0%, #334155 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+[data-theme="light"] .verix-hero-subtitle {
+  color: #475569;
+}
+
+[data-theme="light"] .verix-btn-primary {
+  background: #0f172a;
+  color: #ffffff;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.15);
+}
+
+[data-theme="light"] .verix-btn-secondary {
+  background: rgba(15, 23, 42, 0.05);
+  color: #0f172a;
+  border-color: rgba(15, 23, 42, 0.15);
+}
+
+/* Hero Section */
+.verix-hero-content {
+  position: relative;
+  z-index: 10;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 56px;
+  max-width: 780px;
+  margin-top: 40px;
+  margin-bottom: 80px;
+}
+
+.verix-hero-title {
+  font-size: 3.8rem;
+  line-height: 1.12;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin: 0 0 24px 0;
+  text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.verix-hero-accent {
+  background: linear-gradient(135deg, #ffffff 0%, rgba(255, 255, 255, 0.8) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.verix-hero-subtitle {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.7);
+  max-width: 540px;
+  margin: 0 0 36px 0;
+  letter-spacing: 0.01em;
+}
+
+/* Hero Action Buttons */
+.verix-hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.verix-btn-primary {
+  background: #ffffff;
+  color: #030307;
+  border: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 14px 28px;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 8px 24px rgba(255, 255, 255, 0.12);
+  font-family: inherit;
+}
+
+.verix-btn-primary:hover {
+  background: rgba(255, 255, 255, 0.92);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(255, 255, 255, 0.22);
+}
+
+.verix-btn-secondary {
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 14px 28px;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-family: inherit;
+}
+
+.verix-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.35);
+  transform: translateY(-2px);
+}
+
+/* Responsive Layout */
+@media (max-width: 900px) {
+  .verix-header {
+    padding: 20px 24px;
+  }
+
+  .verix-nav-pills {
+    display: none;
+  }
+
+  .verix-hero-content {
+    padding: 0 24px;
+    margin-top: 20px;
+  }
+
+  .verix-hero-title {
+    font-size: 2.8rem;
+  }
+
+  .verix-hero-subtitle {
+    font-size: 0.95rem;
+  }
+}
