@@ -145,7 +145,9 @@ export default function Research() {
 
   // Research start via WebSocket
   const startResearch = () => {
-    if (!query.trim()) return;
+    const currentQuery = query.trim();
+    if (!currentQuery) return;
+    setQuery("");
     setActivities([]);
     setReport("");
     setViewingReport(null);
@@ -158,7 +160,7 @@ export default function Research() {
       ws.send(
         JSON.stringify({
           token: localStorage.getItem("token"),
-          query,
+          query: currentQuery,
           session_id: sessionId,
         })
       );
@@ -191,7 +193,8 @@ export default function Research() {
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === "Enter" && (e.ctrlKey || e.metaKey) && !running) {
+    if (e.key === "Enter" && !e.shiftKey && !running) {
+      e.preventDefault();
       startResearch();
     }
   };

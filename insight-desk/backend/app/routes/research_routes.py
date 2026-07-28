@@ -4,6 +4,7 @@ import os
 import uuid
 
 from fastapi import APIRouter, Depends, File, UploadFile, WebSocket, WebSocketDisconnect
+from starlette.websockets import WebSocketState
 from jose import jwt
 from sqlalchemy.orm import Session
 
@@ -57,20 +58,22 @@ async def research_ws(websocket: WebSocket):
             email = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM]).get("sub")
             user = db.query(models.User).filter(models.User.email == email).first()
             if not user:
-                await websocket.send_json({"type": "error", "message": "Auth fail"})
-                await websocket.close()
+                if websocket.client_state == WebSocketState.CONNECTED:
+                    await websocket.send_json({"type": "error", "message": "Auth fail"})
+                    await websocket.close()
                 return
 
             loop = asyncio.get_running_loop()
 
             # emit: har agent update ko frontend par bhejta hai
             def emit(agent, msg):
-                asyncio.run_coroutine_threadsafe(
-                    websocket.send_json(
-                        {"type": "activity", "agent": agent, "message": msg}
-                    ),
-                    loop,
-                )
+                if websocket.client_state == WebSocketState.CONNECTED:
+                    asyncio.run_coroutine_threadsafe(
+                        websocket.send_json(
+                            {"type": "activity", "agent": agent, "message": msg}
+                        ),
+                        loop,
+                    )
 
             # graph blocking hai, isliye thread mein chalao taake websocket na ruke
             state = {
@@ -84,7 +87,8 @@ async def research_ws(websocket: WebSocket):
             result = await loop.run_in_executor(None, research_graph.invoke, state)
 
             # final report bhejo
-            await websocket.send_json({"type": "report", "report": result["report"]})
+            if websocket.client_state == WebSocketState.CONNECTED:
+                await websocket.send_json({"type": "report", "report": result["report"]})
 
             # session DB mein save karo
             sess = models.ResearchSession(
@@ -97,14 +101,20 @@ async def research_ws(websocket: WebSocket):
             )
             db.add(sess)
             db.commit()
-            await websocket.send_json({"type": "done", "session_id": sess.id})
+
+            if websocket.client_state == WebSocketState.CONNECTED:
+                await websocket.send_json({"type": "done", "session_id": sess.id})
         finally:
             db.close()
     except WebSocketDisconnect:
         pass
     except Exception as e:
-        await websocket.send_json({"type": "error", "message": str(e)})
-        await websocket.close()
+        if websocket.client_state == WebSocketState.CONNECTED:
+            try:
+                await websocket.send_json({"type": "error", "message": str(e)})
+                await websocket.close()
+            except Exception:
+                pass
 
 
 # ---------- 3) SESSION HISTORY ENDPOINTS ----------
