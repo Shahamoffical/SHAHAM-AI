@@ -1,18 +1,32 @@
 import axios from "axios";
 
-const getHost = () => {
-  if (typeof window !== "undefined" && window.location.hostname) {
-    return window.location.hostname;
+const getApiUrl = () => {
+  if (import.meta.env.VITE_API_URL) {
+    return import.meta.env.VITE_API_URL.replace(/\/$/, "");
   }
-  return "127.0.0.1";
+  if (typeof window !== "undefined") {
+    const hostname = window.location.hostname;
+    if (hostname === "localhost" || hostname === "127.0.0.1") {
+      return `http://${hostname}:8000`;
+    }
+  }
+  return "http://127.0.0.1:8000";
 };
 
-export const API_URL = `http://${getHost()}:8000`;
-export const WS_URL = `ws://${getHost()}:8000/ws/research`;
+const getWsUrl = () => {
+  if (import.meta.env.VITE_WS_URL) {
+    return import.meta.env.VITE_WS_URL;
+  }
+  const apiUrl = getApiUrl();
+  return apiUrl.replace(/^http/, "ws") + "/ws/research";
+};
+
+export const API_URL = getApiUrl();
+export const WS_URL = getWsUrl();
 
 const api = axios.create({ baseURL: API_URL });
 
-// har request mein token laga do (agar hai)
+// Include token in request headers if available
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) config.headers.Authorization = `Bearer ${token}`;
